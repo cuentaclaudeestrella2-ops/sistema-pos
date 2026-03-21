@@ -19,3 +19,8 @@ Route::delete('/api/inventario/{id}', [PosController::class, 'eliminarProducto']
 
 Route::get('/api/movimientos', [PosController::class, 'getMovimientos']);
 Route::post('/api/venta', [PosController::class, 'procesarVenta']);
+
+Route::get('/run-seed', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true, '--seed' => true]);
+    return "Database migrated and seeded con 140+ productos!";
+});
