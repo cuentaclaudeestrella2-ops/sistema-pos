@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demostración - AutoCars Cabrera</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Google Fonts: Space Grotesk & Inter -->
@@ -28,8 +28,8 @@
              <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11v-1a2 2 0 00-2-2h-3l-2-2H8a2 2 0 00-2 2v10a2 2 0 002 2h4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11l4-4m0 0l-4-4m4 4H4m10 5l4 4m0 0l4-4m-4 4V7"></path></svg>
         </div>
         <div class="flex flex-col">
-          <h1 class="font-display font-bold text-2xl tracking-widest text-white leading-none">AUTOCARS</h1>
-          <h1 class="font-display font-bold text-2xl tracking-widest text-primary leading-none mt-1" style="text-shadow: 0 0 10px rgba(255,42,77,0.3);">CABRERA</h1>
+          <h1 class="font-display font-bold text-2xl tracking-widest leading-none" style="color: rgba(255,255,255,0.45);">AUTOCARS</h1>
+          <h1 class="font-display font-bold text-2xl tracking-widest leading-none mt-1" style="color: rgba(255,42,77,0.4); text-shadow: 0 0 10px rgba(255,42,77,0.15);">CABRERA</h1>
         </div>
       </div>
     </div>
