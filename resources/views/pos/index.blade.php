@@ -15,69 +15,7 @@
 
 <div class="flex h-screen overflow-hidden">
 
-  <!-- Sidebar -->
-  <aside class="w-72 bg-panel flex flex-col flex-shrink-0 relative">
-    <div class="p-8 border-b border-border-light relative overflow-hidden">
-      <!-- Glow effect behind logo -->
-      <div class="absolute -top-10 -left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
-      
-      <div class="flex items-center gap-4 relative z-10">
-        <div class="w-12 h-12 bg-white/5 flex items-center justify-center border border-white/10 text-white rounded-xl shadow-glow relative overflow-hidden">
-             <!-- shine effect -->
-             <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none"></div>
-             <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11v-1a2 2 0 00-2-2h-3l-2-2H8a2 2 0 00-2 2v10a2 2 0 002 2h4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11l4-4m0 0l-4-4m4 4H4m10 5l4 4m0 0l4-4m-4 4V7"></path></svg>
-        </div>
-        <div class="flex flex-col">
-          <h1 class="font-display font-bold text-2xl tracking-widest leading-none" style="color: rgba(255,255,255,0.45);">AUTOCARS</h1>
-          <h1 class="font-display font-bold text-2xl tracking-widest leading-none mt-1" style="color: rgba(255,42,77,0.4); text-shadow: 0 0 10px rgba(255,42,77,0.15);">CABRERA</h1>
-        </div>
-      </div>
-    </div>
-
-    <nav class="flex-1 p-5 space-y-2 relative z-10">
-      <div class="text-xs font-bold text-muted uppercase tracking-widest mb-6 mt-2 px-4 opacity-70">Módulos del Sistema</div>
-      
-      <div class="nav-item group" :class="page==='panel'?'active':''" @click="page='panel'">
-        <div class="w-8 flex justify-center text-muted group-hover:text-white transition-colors" :class="page==='panel'?'text-primary':''">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        </div>
-        <span>Panel Principal</span>
-      </div>
-      <div class="nav-item group" :class="page==='clientes'?'active':''" @click="page='clientes'">
-        <div class="w-8 flex justify-center text-muted group-hover:text-white transition-colors" :class="page==='clientes'?'text-primary':''">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <span>Directorio</span>
-      </div>
-      <div class="nav-item group" :class="page==='inventario'?'active':''" @click="page='inventario'">
-        <div class="w-8 flex justify-center text-muted group-hover:text-white transition-colors" :class="page==='inventario'?'text-primary':''">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-        </div>
-        <span>Inventario</span>
-      </div>
-      <div class="nav-item group" :class="page==='caja'?'active':''" @click="page='caja'">
-        <div class="w-8 flex justify-center text-muted group-hover:text-white transition-colors" :class="page==='caja'?'text-primary':''">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        </div>
-        <span>Caja y Cierre</span>
-      </div>
-    </nav>
-
-    <div class="p-6 border-t border-border-light bg-black/20 backdrop-blur-md relative z-10 hover:bg-white/5 transition-colors cursor-pointer">
-      <div class="flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center p-[2px]">
-            <div class="w-full h-full bg-base rounded-full flex items-center justify-center title font-bold text-sm text-white">
-                EC
-            </div>
-        </div>
-        <div>
-          <p class="text-xs text-muted font-medium mb-0.5">Administrador</p>
-          <p class="title text-sm font-bold text-white tracking-wide">Estrella Cabrera L.</p>
-        </div>
-      </div>
-    </div>
-  </aside>
-
+  <!-- Sidebar removed as requested (Old interface) -->
   <!-- Main -->
   <div class="flex-1 flex flex-col overflow-hidden relative">
     
@@ -119,97 +57,6 @@
     <!-- Content -->
     <main class="flex-1 overflow-y-auto px-10 py-8"> <!-- padding para alinear con header -->
 
-      <!-- ============ PANEL ============ -->
-      <div x-show="page==='panel'" class="space-y-8 animate-fade-in" style="display:none;">
-        <!-- Tarjetas de KPI -->
-        <div class="grid grid-cols-4 gap-6">
-          <div class="kpi group border-t-2" style="border-top-color: #FFB800;">
-            <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity">
-                <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.64-2.25 1.64-1.74 0-2.26-.87-2.32-1.76H7.9c.08 1.5 1.25 2.65 3 3V19h2v-1.6c1.69-.27 2.92-1.3 2.92-2.97 0-2.01-1.65-2.69-3.51-3.29z"/></svg>
-            </div>
-            <div class="relative z-10 flex flex-col h-full justify-between">
-              <div>
-                <p class="text-muted text-xs font-bold uppercase tracking-wider mb-2">Ventas de Hoy</p>
-                <p class="kpi-val text-white" x-text="'S/ ' + totalVentasHoy().toFixed(2)"></p>
-              </div>
-              <div class="mt-6 flex items-center justify-between">
-                <span class="badge badge-warn bg-accent/10 border-accent/20 text-accent" x-text="movimientos.filter(m=>m.tipo==='ingreso').length + ' transacciones'"></span>
-                <span class="text-xs text-accent/80 font-bold flex items-center gap-1">+5.2% <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg></span>
-              </div>
-            </div>
-          </div>
-
-          <div class="kpi group border-t-2" style="border-top-color: #00E676;">
-            <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity">
-               <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-            </div>
-            <div class="relative z-10 flex flex-col h-full justify-between">
-              <div>
-                <p class="text-muted text-xs font-bold uppercase tracking-wider mb-2">Saldo en Caja</p>
-                <p class="kpi-val text-success" style="text-shadow: 0 0 20px rgba(0,230,118,0.4);" x-text="'S/ ' + saldoCaja().toFixed(2)"></p>
-              </div>
-              <div class="mt-6">
-                <span class="text-xs text-success/80 font-medium">Disponible para operaciones</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="kpi group border-t-2" style="border-top-color: #FF2A4D;">
-            <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity text-primary">
-                <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            </div>
-            <div class="relative z-10 flex flex-col h-full justify-between">
-              <div>
-                <p class="text-muted text-xs font-bold uppercase tracking-wider mb-2">Alertas Stock</p>
-                <p class="kpi-val text-primary" style="text-shadow: 0 0 20px rgba(255,42,77,0.4);" x-text="inventario.filter(i=>i.stock<=i.stockMin).length"></p>
-              </div>
-              <div class="mt-6">
-                 <span class="badge badge-low text-[10px] shadow-glow">Requieren reposición</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="kpi group border-t-2 border-border-light relative overflow-hidden">
-             <!-- shine effect -->
-             <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity">
-                <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-            </div>
-            <div class="relative z-10 flex flex-col h-full justify-between">
-              <div>
-                <p class="text-muted text-xs font-bold uppercase tracking-wider mb-2">Clientela Activa</p>
-                <p class="kpi-val text-white" x-text="clientes.length"></p>
-              </div>
-              <div class="mt-6">
-                <span class="badge badge-ok bg-border text-muted border-border-light">Cartera de clientes</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-8">
-          <!-- Transacciones -->
-          <div class="col-span-2 bg-card p-6 border border-border-light shadow-2xl relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div class="flex items-center justify-between mb-6 relative z-10">
-              <h3 class="title font-bold text-lg text-white flex items-center gap-2">
-                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                Últimos Movimientos
-              </h3>
-              <button @click="page='caja'" class="text-sm font-bold text-accent hover:text-white transition-colors flex items-center gap-1 group/btn">
-                  Ver todos 
-                  <svg class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-              </button>
-            </div>
-            
-            <div x-show="movimientos.length===0" class="flex flex-col items-center justify-center py-12 text-muted relative z-10">
-              <div class="w-16 h-16 rounded-full bg-base flex items-center justify-center mb-4 border border-border-light shadow-inner">
-                  <svg class="w-8 h-8 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-              </div>
-              <p class="font-medium">No hay transacciones registradas hoy.</p>
-            </div>
-
-            <div class="overflow-x-auto relative z-10" x-show="movimientos.length>0">
               <table>
                 <thead>
                     <tr>
@@ -854,8 +701,7 @@
 function app() {
   return {
     // State
-    sidebarOpen: true,
-    activeTab: 'pos',
+    page: 'pos', // This is what powers the view rendering now
     
     // POS State
     inventario: [],
