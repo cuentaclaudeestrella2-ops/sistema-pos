@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PosController;
 
-Route::get('/', [PosController::class, 'index']);
+Route::get('/', [PosController::class, 'panel']);
 Route::get('/panel', [PosController::class, 'panel'])->name('panel');
 Route::get('/inventario', [PosController::class, 'index'])->name('inventario.index');
 
