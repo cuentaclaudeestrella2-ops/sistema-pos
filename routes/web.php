@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\PosController;
 
 Route::get('/', [PosController::class, 'panel']);
