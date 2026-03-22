@@ -595,11 +595,23 @@ canvas#mainChart{width:100%!important;}
 
 <!-- ══ SIDEBAR ══ -->
 <aside class="sb">
-    <div class="sb-logo">
-        <div class="sb-logo-mark">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/><circle cx="12" cy="12" r="3"/></svg>
+    <div class="px-7 py-8 flex items-center gap-3.5 border-b border-white/[0.02]">
+        <div class="w-[42px] h-[42px] rounded-[14px] bg-gradient-to-br from-white/10 to-white/[0.02] border border-white/10 flex items-center justify-center shadow-[0_4_20px_rgba(0,0,0,0.2)] backdrop-blur-md shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-opacity="0.15"/>
+                <path d="M12 2a10 10 0 0110 10" stroke-linecap="round"/>
+                <circle cx="12" cy="12" r="3" stroke-opacity="0.4"/>
+                <path d="M12 12l4-4" stroke-linecap="round"/>
+            </svg>
         </div>
-        <div class="sb-logo-text" style="opacity: 0.8; font-weight: 500;">AutoCars <span style="color:var(--brand)">Cabrera</span><small style="opacity: 0.6;">Sistema POS v3.0</small></div>
+        <div class="flex flex-col">
+            <div class="text-[17.5px] font-extrabold tracking-tight text-white leading-none mb-1.5">
+                AutoCars <span class="text-white/40 font-semibold">Cabrera</span>
+            </div>
+            <div class="text-[8.5px] font-mono tracking-[0.25em] text-[var(--brand)] uppercase font-bold opacity-90">
+                Sistema POS <span class="text-white/30">— v3</span>
+            </div>
+        </div>
     </div>
 
     <!-- STATS SUMMARY -->
