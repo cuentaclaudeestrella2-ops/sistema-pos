@@ -602,32 +602,41 @@ canvas#mainChart{width:100%!important;}
         <div class="sb-logo-text" style="opacity: 0.8; font-weight: 500;">AutoCars <span style="color:var(--brand)">Cabrera</span><small style="opacity: 0.6;">Sistema POS v3.0</small></div>
     </div>
 
-    <!-- STATS GRID 2x3 -->
-    <div class="sb-stats">
-        <div class="sb-stat">
-            <div class="sb-stat-v" style="color:var(--green)">S/{{ number_format($ventasHoy ?? 0, 0) }}</div>
-            <div class="sb-stat-l"><span class="sb-stat-dot" style="background:var(--green)"></span> Ventas hoy</div>
+    <!-- STATS SUMMARY -->
+    <div class="px-5 pb-5 mt-2">
+      <div class="grid grid-cols-2 gap-3">
+        
+        <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-3 shadow-sm flex flex-col justify-between hover:bg-[var(--s3)] hover:border-[var(--b1)] transition-all duration-200 group cursor-default">
+            <div class="text-[9.5px] uppercase font-bold text-[var(--t2)] tracking-widest group-hover:text-white/60 transition-colors">Ventas hoy</div>
+            <div class="text-[16px] font-bold text-[var(--t0)] mt-1.5 font-mono tracking-tight leading-none">S/{{ number_format($ventasHoy ?? 0, 0) }}</div>
         </div>
-        <div class="sb-stat">
-            <div class="sb-stat-v">{{ $totalProductos ?? 0 }}</div>
-            <div class="sb-stat-l"><span class="sb-stat-dot" style="background:var(--blue)"></span> Productos</div>
+
+        <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-3 shadow-sm flex flex-col justify-between hover:bg-[var(--s3)] hover:border-[var(--b1)] transition-all duration-200 group cursor-default">
+            <div class="text-[9.5px] uppercase font-bold text-[var(--t2)] tracking-widest group-hover:text-white/60 transition-colors">Productos</div>
+            <div class="text-[16px] font-bold text-[var(--t0)] mt-1.5 font-mono tracking-tight leading-none">{{ $totalProductos ?? 0 }}</div>
         </div>
-        <div class="sb-stat">
-            <div class="sb-stat-v" style="color:var(--amber)">{{ $stockBajo ?? 0 }}</div>
-            <div class="sb-stat-l"><span class="sb-stat-dot" style="background:var(--amber)"></span> Stock bajo</div>
+
+        <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-3 shadow-sm flex flex-col justify-between hover:bg-[var(--s3)] hover:border-[var(--b1)] transition-all duration-200 group cursor-default">
+            <div class="text-[9.5px] uppercase font-bold text-[var(--t2)] tracking-widest group-hover:text-white/60 transition-colors">Stock bajo</div>
+            <div class="text-[16px] font-bold text-[var(--t0)] mt-1.5 font-mono tracking-tight leading-none">{{ $stockBajo ?? 0 }}</div>
         </div>
-        <div class="sb-stat">
-            <div class="sb-stat-v" style="color:var(--red)">{{ $stockCritico ?? 0 }}</div>
-            <div class="sb-stat-l"><span class="sb-stat-dot" style="background:var(--red)"></span> Críticos</div>
+
+        <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-3 shadow-sm flex flex-col justify-between hover:bg-[var(--s3)] hover:border-[var(--b1)] transition-all duration-200 group cursor-default">
+            <div class="text-[9.5px] uppercase font-bold text-[var(--t2)] tracking-widest group-hover:text-[var(--red)] transition-colors">Críticos</div>
+            <div class="text-[16px] font-bold text-[var(--t0)] mt-1.5 font-mono tracking-tight leading-none">{{ $stockCritico ?? 0 }}</div>
         </div>
-        <div class="sb-stat">
-            <div class="sb-stat-v" style="color:var(--amber)">{{ $totalClientes ?? 0 }}</div>
-            <div class="sb-stat-l"><span class="sb-stat-dot" style="background:var(--amber)"></span> Clientes</div>
+
+        <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-3 shadow-sm flex flex-col justify-between hover:bg-[var(--s3)] hover:border-[var(--b1)] transition-all duration-200 group cursor-default">
+            <div class="text-[9.5px] uppercase font-bold text-[var(--t2)] tracking-widest group-hover:text-white/60 transition-colors">Clientes</div>
+            <div class="text-[16px] font-bold text-[var(--t0)] mt-1.5 font-mono tracking-tight leading-none">{{ $totalClientes ?? 0 }}</div>
         </div>
-        <div class="sb-stat">
-            <div class="sb-stat-v">{{ $ventasHoyCount ?? 0 }}</div>
-            <div class="sb-stat-l"><span class="sb-stat-dot" style="background:var(--green)"></span> Movimientos</div>
+
+        <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-3 shadow-sm flex flex-col justify-between hover:bg-[var(--s3)] hover:border-[var(--b1)] transition-all duration-200 group cursor-default">
+            <div class="text-[9.5px] uppercase font-bold text-[var(--t2)] tracking-widest group-hover:text-white/60 transition-colors">Movimientos</div>
+            <div class="text-[16px] font-bold text-[var(--t0)] mt-1.5 font-mono tracking-tight leading-none">{{ $ventasHoyCount ?? 0 }}</div>
         </div>
+
+      </div>
     </div>
 
     <!-- ALERT BANNER -->
