@@ -904,48 +904,61 @@ canvas#mainChart{width:100%!important;}
 
         <!-- ACTIVITY ROW -->
         <div class="activity-row">
-            <div class="act-card">
-                <div class="act-title">
-                    <span class="dot" style="background:var(--amber)"></span>
+            <div class="act-card flex flex-col justify-between">
+                <div class="uppercase tracking-widest text-[var(--t2)] text-[10px] font-bold mb-5 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--t2)] opacity-30"></span>
                     Top categorías
                 </div>
-                <div class="act-list">
+                <div class="flex flex-col gap-4">
                     @php
                     $cats = $categoriaStats ?? [
-                        ['nombre'=>'Lubricantes','pct'=>35,'color'=>'var(--green)'],
-                        ['nombre'=>'Frenos','pct'=>22,'color'=>'var(--blue)'],
-                        ['nombre'=>'Accesorios','pct'=>18,'color'=>'var(--amber)'],
-                        ['nombre'=>'Filtros','pct'=>15,'color'=>'var(--red)'],
-                        ['nombre'=>'Transmisión','pct'=>10,'color'=>'var(--t2)'],
+                        ['nombre'=>'Lubricantes','pct'=>35],
+                        ['nombre'=>'Frenos','pct'=>22],
+                        ['nombre'=>'Accesorios','pct'=>18],
+                        ['nombre'=>'Filtros','pct'=>15],
+                        ['nombre'=>'Transmisión','pct'=>10],
                     ];
                     @endphp
                     @foreach($cats as $cat)
-                    <div>
-                        <div class="act-item">
-                            <span class="act-name">{{ $cat['nombre'] }}</span>
-                            <span class="act-val">{{ $cat['pct'] }}%</span>
+                    <div class="group cursor-default">
+                        <div class="flex justify-between items-center text-xs mb-2">
+                            <span class="text-[var(--t1)] group-hover:text-white transition-colors">{{ $cat['nombre'] }}</span>
+                            <span class="font-mono font-semibold text-white/40 group-hover:text-white transition-colors">{{ $cat['pct'] }}%</span>
                         </div>
-                        <div class="act-bar-row">
-                            <div class="act-bar-wrap">
-                                <div class="act-bar" style="width:{{ $cat['pct'] }}%;background:{{ $cat['color'] }}"></div>
-                            </div>
+                        <div class="w-full bg-[var(--b0)] h-[2px] rounded-full overflow-hidden">
+                            <div class="bg-white/20 h-[2px] rounded-full group-hover:bg-white transition-colors" style="width:{{ $cat['pct'] }}%"></div>
                         </div>
                     </div>
                     @endforeach
                 </div>
             </div>
 
-            <div class="act-card">
-                <div class="act-title">
-                    <span class="dot" style="background:var(--blue)"></span>
+            <div class="act-card flex flex-col">
+                <div class="uppercase tracking-widest text-[var(--t2)] text-[10px] font-bold mb-5 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--t2)] opacity-30"></span>
                     Resumen del día
                 </div>
-                <div class="act-list">
-                    <div class="act-item"><span class="act-name">Ventas realizadas</span><span class="act-val">0</span></div>
-                    <div class="act-item"><span class="act-name">Productos vendidos</span><span class="act-val">0</span></div>
-                    <div class="act-item"><span class="act-name">Ticket promedio</span><span class="act-val" style="color:var(--green)">S/ 0.00</span></div>
-                    <div class="act-item"><span class="act-name">Nuevos clientes</span><span class="act-val">0</span></div>
-                    <div class="act-item"><span class="act-name">Alertas de stock</span><span class="act-val" style="color:var(--red)">{{ $stockCritico ?? 2 }}</span></div>
+                <div class="mt-1 flex flex-col gap-4">
+                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
+                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Ventas realizadas</span>
+                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">{{ $ventasHoyCount ?? 0 }}</span>
+                    </div>
+                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
+                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Productos vendidos</span>
+                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">{{ $productosVendidosHoy ?? 0 }}</span>
+                    </div>
+                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
+                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Ticket promedio</span>
+                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">S/ 0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
+                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Nuevos clientes</span>
+                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">0</span>
+                    </div>
+                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
+                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-[var(--red)] transition-colors">Alertas de stock</span>
+                        <span class="font-mono text-[13px] font-bold text-[var(--t0)] group-hover:text-[var(--red)] transition-colors">{{ $stockCritico ?? 0 }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -987,73 +1000,72 @@ canvas#mainChart{width:100%!important;}
             </div>
 
             <!-- REPOSICIÓN URGENTE -->
-            <div class="card">
-                <div class="card-head">
-                    <div class="card-title" style="display:flex;align-items:center;gap:6px;">
-                        <svg width="13" height="13" fill="none" stroke="var(--red)" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            <div class="card bg-[var(--s2)] border border-[var(--b0)] rounded-[20px] overflow-hidden shadow-sm flex flex-col">
+                <div class="flex items-center justify-between px-6 py-5 border-b border-[var(--b0)]">
+                    <div class="uppercase tracking-widest text-[var(--t2)] text-[10px] font-bold flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--t2)] opacity-30"></span>
                         Reposición urgente
                     </div>
-                    <a href="{{ route('inventario.index') ?? '#' }}" class="card-link">
+                    <a href="{{ route('inventario.index') ?? '#' }}" class="text-[11px] text-[var(--t2)] hover:text-white transition-colors flex items-center gap-1 font-semibold">
                         Ver inventario
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
                 </div>
 
+                <div class="divide-y divide-[var(--b0)] flex-1 overflow-y-auto max-h-[300px]">
                 @forelse($productosReposicion ?? [] as $p)
                 @php
                     $pct = $p->stock_minimo > 0 ? min(100, round($p->stock / $p->stock_minimo * 100)) : 0;
-                    $color = $p->stock <= 2 ? 'red' : 'amber';
                 @endphp
-                <div class="repo-item">
-                    <div class="repo-top">
+                <div class="group px-6 py-4 hover:bg-[var(--s3)] transition-colors flex flex-col gap-3 cursor-default">
+                    <div class="flex items-start justify-between">
                         <div>
-                            <div class="repo-name">{{ $p->nombre }}</div>
-                            <div class="repo-code">{{ $p->codigo ?? 'Sin código' }}</div>
+                            <div class="text-[13px] font-semibold text-[var(--t0)] group-hover:text-white transition-colors">{{ $p->nombre }}</div>
+                            <div class="text-[10px] font-mono text-[var(--t2)] mt-1">{{ $p->codigo ?? 'Sin código' }} · {{ $p->categoria }}</div>
                         </div>
-                        <span class="repo-pill {{ $color }}">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span class="px-2.5 py-1 text-[10px] font-mono font-bold border border-[var(--b2)] text-[var(--t1)] rounded-md opacity-70 group-hover:opacity-100 group-hover:border-[var(--red-a)] group-hover:text-[var(--red)] transition-all flex items-center gap-1.5 whitespace-nowrap">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[var(--red)] opacity-0 group-hover:opacity-100 transition-opacity"></span>
                             {{ $p->stock }} {{ $p->unidad_medida ?? 'und' }}
                         </span>
                     </div>
-                    <div class="repo-bar-wrap">
-                        <div class="repo-bar {{ $color }}" style="width:{{ $pct }}%"></div>
-                    </div>
-                    <div class="repo-footer">
-                        <span class="repo-cat">{{ $p->categoria }}</span>
-                        <span class="repo-min">mín {{ $p->stock_minimo ?? 5 }}</span>
+                    <div class="w-full bg-[var(--b0)] h-[2px] rounded-full overflow-hidden">
+                        <div class="bg-white/20 h-[2px] rounded-full group-hover:bg-[var(--red)] transition-colors" style="width:{{ $pct }}%"></div>
                     </div>
                 </div>
                 @empty
                 {{-- fallback con datos reales de la imagen --}}
-                <div class="repo-item">
-                    <div class="repo-top">
+                <div class="group px-6 py-4 hover:bg-[var(--s3)] transition-colors flex flex-col gap-3 cursor-default">
+                    <div class="flex items-start justify-between">
                         <div>
-                            <div class="repo-name">Faro Delantero LED Ojo de Ángel 7 Pulgadas</div>
-                            <div class="repo-code">ACC-101 · HJG</div>
+                            <div class="text-[13px] font-semibold text-[var(--t0)] group-hover:text-white transition-colors">Faro Delantero LED Ojo de Ángel 7 Pulgadas</div>
+                            <div class="text-[10px] font-mono text-[var(--t2)] mt-1">ACC-101 · Accesorios</div>
                         </div>
-                        <span class="repo-pill red">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span class="px-2.5 py-1 text-[10px] font-mono font-bold border border-[var(--b2)] text-[var(--t1)] rounded-md opacity-70 group-hover:opacity-100 group-hover:border-[var(--red-a)] group-hover:text-[var(--red)] transition-all flex items-center gap-1.5 whitespace-nowrap">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[var(--red)] opacity-0 group-hover:opacity-100 transition-opacity"></span>
                             1 und
                         </span>
                     </div>
-                    <div class="repo-bar-wrap"><div class="repo-bar red" style="width:10%"></div></div>
-                    <div class="repo-footer"><span class="repo-cat">Accesorios</span><span class="repo-min">mín 2</span></div>
+                    <div class="w-full bg-[var(--b0)] h-[2px] rounded-full overflow-hidden">
+                        <div class="bg-white/20 h-[2px] rounded-full group-hover:bg-[var(--red)] transition-colors" style="width:10%"></div>
+                    </div>
                 </div>
-                <div class="repo-item">
-                    <div class="repo-top">
+                <div class="group px-6 py-4 hover:bg-[var(--s3)] transition-colors flex flex-col gap-3 cursor-default">
+                    <div class="flex items-start justify-between">
                         <div>
-                            <div class="repo-name">Kit de Arrastre Racing (Cadena+Piñón+Corona)</div>
-                            <div class="repo-code">TRA-005 · RIZOMA</div>
+                            <div class="text-[13px] font-semibold text-[var(--t0)] group-hover:text-white transition-colors">Kit de Arrastre Racing (Cadena+Piñón+Corona)</div>
+                            <div class="text-[10px] font-mono text-[var(--t2)] mt-1">TRA-005 · Transmisión</div>
                         </div>
-                        <span class="repo-pill amber">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span class="px-2.5 py-1 text-[10px] font-mono font-bold border border-[var(--b2)] text-[var(--t1)] rounded-md opacity-70 group-hover:opacity-100 group-hover:border-[var(--red-a)] group-hover:text-[var(--red)] transition-all flex items-center gap-1.5 whitespace-nowrap">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[var(--red)] opacity-0 group-hover:opacity-100 transition-opacity"></span>
                             2 kit
                         </span>
                     </div>
-                    <div class="repo-bar-wrap"><div class="repo-bar amber" style="width:25%"></div></div>
-                    <div class="repo-footer"><span class="repo-cat">Transmisión</span><span class="repo-min">mín 5</span></div>
+                    <div class="w-full bg-[var(--b0)] h-[2px] rounded-full overflow-hidden">
+                        <div class="bg-white/20 h-[2px] rounded-full group-hover:bg-[var(--red)] transition-colors" style="width:25%"></div>
+                    </div>
                 </div>
                 @endforelse
+                </div>
             </div>
 
         </div><!-- /bottom-grid -->
