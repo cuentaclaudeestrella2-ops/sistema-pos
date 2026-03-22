@@ -1700,19 +1700,24 @@ async function addStock(e){
     const form = e.target;
     const fd = new FormData(form);
     const prodId = fd.get('producto_id');
-    const cant = parseInt(fd.get('cantidad'));
+    const cant = parseInt(fd.get('cantidad'), 10);
     const msg = document.getElementById('msgStock');
+    
+    if(!prodId || isNaN(cant) || cant <= 0) {
+        msg.className='sb-modal-msg error';
+        msg.textContent='Datos inválidos';
+        return false;
+    }
+
     try{
-        const r1 = await fetch('/api/inventario');
-        const items = await r1.json();
-        const prod = items.find(p=>p.id==prodId);
-        if(!prod) throw new Error('No encontrado');
-        prod.stock = (prod.stock||0) + cant;
-        const r2 = await fetch('/api/inventario',{
-            method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':csrfToken},
-            body:JSON.stringify(prod)
+        const r = await fetch('/api/inventario/add-stock',{
+            method:'POST',
+            headers:{'Content-Type':'application/json','X-CSRF-TOKEN':csrfToken},
+            body:JSON.stringify({ id: prodId, cantidad: cant })
         });
-        if(!r2.ok) throw new Error('Error');
+        
+        if(!r.ok) throw new Error('Error de servidor al incrementar stock');
+        
         msg.className='sb-modal-msg success';
         msg.textContent='Stock actualizado: +'+cant+' unidades';
         form.reset();

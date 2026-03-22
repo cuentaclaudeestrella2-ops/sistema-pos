@@ -110,7 +110,7 @@ class PosController extends Controller
 
     public function procesarVenta(Request $request)
     {
-        return \DB::transaction(function() use ($request) {
+        return DB::transaction(function() use ($request) {
             // 1. Registrar el movimiento
             $movimiento = Movimiento::create([
                 'tipo' => 'ingreso',
@@ -121,16 +121,33 @@ class PosController extends Controller
                 'fecha' => $request->fecha
             ]);
 
-            // 2. Descontar stock
-            foreach ($request->carrito as $item) {
-                $producto = Inventario::find($item['id']);
-                if ($producto) {
-                    $producto->stock -= $item['cantidad'];
-                    $producto->save();
+            // 2. Descontar stock atómicamente para entornos de alta concurrencia
+            if (!empty($request->carrito) && is_array($request->carrito)) {
+                foreach ($request->carrito as $item) {
+                    if (isset($item['id']) && isset($item['cantidad'])) {
+                        // Utiliza un decremento atómico seguro.
+                        Inventario::where('id', $item['id'])
+                                  ->decrement('stock', $item['cantidad']);
+                    }
                 }
             }
 
             return response()->json($movimiento);
+        });
+    }
+
+    public function addStock(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'cantidad' => 'required|numeric'
+        ]);
+
+        return DB::transaction(function() use ($request) {
+            // Incremento atómico para seguridad concurrente
+            Inventario::where('id', $request->id)->increment('stock', $request->cantidad);
+            $producto = Inventario::find($request->id);
+            return response()->json($producto);
         });
     }
 }
