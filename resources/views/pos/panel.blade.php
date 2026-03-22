@@ -1004,30 +1004,38 @@ canvas#mainChart{width:100%!important;}
 </div><!-- /x-show panel -->
 
 <!-- ===== CLIENTES ===== -->
-      <div x-show="page==='clientes'" class="space-y-5" style="display:none;">
-        <div class="flex items-center justify-between bg-card p-4 border border-border-light">
-          <div class="relative w-80">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input x-model="busqCliente" placeholder="Buscar por nombre, RUC..." class="pl-9">
+      <div x-show="page==='clientes'" class="space-y-6" style="display:none; padding: 0 10px;">
+        <div class="flex items-center justify-between bg-[var(--s1)] p-5 border border-[var(--b0)] rounded-2xl shadow-sm">
+          <div class="relative w-96">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input x-model="busqCliente" placeholder="Buscar por nombre, RUC..." class="w-full pl-11 py-2.5 bg-[var(--s2)] border border-[var(--b1)] rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[var(--brand)] transition-colors text-sm">
           </div>
-          <button class="btn-primary py-2 px-5" @click="modalCliente=true;editCliente=null;formC={razon:'',comercial:'',tipoDoc:'RUC',nroDoc:'',telefono:'',email:'',direccion:'',distrito:'',ciudad:'Lima',credDias:0,limCredito:0,listaPrecio:'1',estado:'activo',notas:''}">
+          <button class="btn-primary py-2.5 px-6 rounded-xl font-bold shadow-lg" @click="modalCliente=true;editCliente=null;formC={razon:'',comercial:'',tipoDoc:'RUC',nroDoc:'',telefono:'',email:'',direccion:'',distrito:'',ciudad:'Lima',credDias:0,limCredito:0,listaPrecio:'1',estado:'activo',notas:''}">
             + Nuevo Cliente
           </button>
         </div>
-        <div class="bg-card border border-border-light overflow-hidden shadow-2xl">
-          <div x-show="clientesFiltrados().length===0" class="text-center py-12 text-muted">Ningún cliente encontrado.</div>
-          <table x-show="clientesFiltrados().length>0">
-            <thead><tr><th>Doc</th><th>Razón Social</th><th>Teléfono</th><th>Estado</th><th class="text-right">Acciones</th></tr></thead>
-            <tbody>
+        <div class="bg-[var(--s1)] border border-[var(--b0)] rounded-2xl overflow-hidden shadow-2xl">
+          <div x-show="clientesFiltrados().length===0" class="text-center py-16 text-white/40 text-sm">Ningún cliente encontrado. Intenta buscar otro nombre.</div>
+          <table x-show="clientesFiltrados().length>0" class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--s2)] border-b border-[var(--b0)]">
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Doc</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Razón Social</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Teléfono</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Estado</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--b0)]">
               <template x-for="c in clientesFiltrados()" :key="c.id">
-                <tr>
-                  <td><span class="badge bg-white/5 border-white/10 text-muted text-[10px]" x-text="c.tipoDoc+' '+c.nroDoc"></span></td>
-                  <td class="font-bold text-white" x-text="c.razon"></td>
-                  <td class="text-muted" x-text="c.telefono||'--'"></td>
-                  <td><span class="badge" :class="c.estado==='activo'?'badge-ok':'badge-low'" x-text="c.estado"></span></td>
-                  <td class="text-right space-x-2">
-                    <button @click="abrirEditCliente(c)" class="text-accent hover:text-white p-1.5 bg-accent/5 rounded hover:bg-accent/20 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
-                    <button @click="eliminarCliente(c.id)" class="text-primary hover:text-white p-1.5 bg-primary/5 rounded hover:bg-primary/20 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                <tr class="hover:bg-white/[0.02] transition-colors group cursor-default">
+                  <td class="px-6 py-4 whitespace-nowrap"><span class="badge bg-[var(--s2)] border-[var(--b1)] text-white/60 text-[10px] px-2.5" x-text="c.tipoDoc+' '+c.nroDoc"></span></td>
+                  <td class="px-6 py-4 text-sm font-bold text-white group-hover:text-[var(--brand)] transition-colors" x-text="c.razon"></td>
+                  <td class="px-6 py-4 text-sm text-white/60" x-text="c.telefono||'--'"></td>
+                  <td class="px-6 py-4 whitespace-nowrap"><span class="badge px-2.5" :class="c.estado==='activo'?'badge-ok':'badge-low'" x-text="c.estado"></span></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                    <button @click="abrirEditCliente(c)" class="text-white/40 hover:text-[var(--brand)] p-2 bg-[var(--s2)] rounded hover:bg-[var(--brand-a)] transition-all" title="Editar"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                    <button @click="eliminarCliente(c.id)" class="text-white/40 hover:text-[var(--red)] p-2 bg-[var(--s2)] rounded hover:bg-[var(--red-a)] transition-all" title="Eliminar"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                   </td>
                 </tr>
               </template>
@@ -1038,30 +1046,39 @@ canvas#mainChart{width:100%!important;}
 
       
 <!-- ===== INVENTARIO ===== -->
-      <div x-show="page==='inventario'" class="space-y-5" style="display:none;">
-        <div class="flex items-center justify-between bg-card p-4 border border-border-light">
-          <div class="relative w-80">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input x-model="busqInv" placeholder="Buscar por código o nombre..." class="pl-9">
+      <div x-show="page==='inventario'" class="space-y-6" style="display:none; padding: 0 10px;">
+        <div class="flex items-center justify-between bg-[var(--s1)] p-5 border border-[var(--b0)] rounded-2xl shadow-sm">
+          <div class="relative w-96">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input x-model="busqInv" placeholder="Buscar por código o nombre..." class="w-full pl-11 py-2.5 bg-[var(--s2)] border border-[var(--b1)] rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[var(--brand)] transition-colors text-sm">
           </div>
-          <button class="btn-primary py-2 px-5" @click="formI={codigo:'',nombre:'',categoria:'Lubricantes',marca:'',unidad:'Unidad',precio1:'',precio2:'',precio3:'',stock:0,stockMin:0,stockMax:0,ubicacion:'',estado:'activo'};editInv=null;modalInv=true">
+          <button class="btn-primary py-2.5 px-6 rounded-xl font-bold shadow-lg" @click="formI={codigo:'',nombre:'',categoria:'Lubricantes',marca:'',unidad:'Unidad',precio1:'',precio2:'',precio3:'',stock:0,stockMin:0,stockMax:0,ubicacion:'',estado:'activo'};editInv=null;modalInv=true">
             + Nuevo Producto
           </button>
         </div>
-        <div class="bg-card border border-border-light overflow-hidden shadow-2xl">
-          <table>
-            <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th class="text-right">Acciones</th></tr></thead>
-            <tbody>
+        <div class="bg-[var(--s1)] border border-[var(--b0)] rounded-2xl overflow-hidden shadow-2xl">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--s2)] border-b border-[var(--b0)]">
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Código</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Producto</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Categoría</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Precio Público</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50">Stock</th>
+                <th class="px-6 py-4 font-semibold text-xs tracking-wider uppercase text-white/50 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--b0)]">
               <template x-for="p in invFiltrado()" :key="p.id">
-                <tr>
-                  <td><span class="badge bg-white/5 border-white/10 text-muted text-[10px]" x-text="p.codigo"></span></td>
-                  <td class="font-bold text-white truncate max-w-xs" x-text="p.nombre"></td>
-                  <td class="text-muted" x-text="p.categoria"></td>
-                  <td class="font-display font-bold text-white" x-text="'S/ '+parseFloat(p.precio1).toFixed(2)"></td>
-                  <td><span class="badge text-[10px]" :class="p.stock<=0?'badge-low':p.stock<=p.stockMin?'badge-warn':'badge-ok'" x-text="p.stock+' '+p.unidad"></span></td>
-                  <td class="text-right space-x-2">
-                    <button @click="abrirEditInv(p)" class="text-accent hover:text-white p-1.5 bg-accent/5 rounded hover:bg-accent/20 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
-                    <button @click="eliminarProd(p.id)" class="text-primary hover:text-white p-1.5 bg-primary/5 rounded hover:bg-primary/20 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                <tr class="hover:bg-white/[0.02] transition-colors group cursor-default">
+                  <td class="px-6 py-4 whitespace-nowrap"><span class="badge bg-[var(--s2)] border-[var(--b1)] text-white/60 text-[10px] px-2.5" x-text="p.codigo"></span></td>
+                  <td class="px-6 py-4 text-sm font-bold text-white truncate max-w-xs group-hover:text-[var(--brand)] transition-colors" x-text="p.nombre"></td>
+                  <td class="px-6 py-4 text-sm text-white/60" x-text="p.categoria"></td>
+                  <td class="px-6 py-4 text-sm font-display font-bold text-white" x-text="'S/ '+parseFloat(p.precio1).toFixed(2)"></td>
+                  <td class="px-6 py-4 whitespace-nowrap"><span class="badge text-[10px] px-2.5" :class="p.stock<=0?'badge-low':p.stock<=p.stockMin?'badge-warn':'badge-ok'" x-text="p.stock+' '+p.unidad"></span></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                    <button @click="abrirEditInv(p)" class="text-white/40 hover:text-[var(--brand)] p-2 bg-[var(--s2)] rounded hover:bg-[var(--brand-a)] transition-all" title="Editar"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                    <button @click="eliminarProd(p.id)" class="text-white/40 hover:text-[var(--red)] p-2 bg-[var(--s2)] rounded hover:bg-[var(--red-a)] transition-all" title="Eliminar"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                   </td>
                 </tr>
               </template>
