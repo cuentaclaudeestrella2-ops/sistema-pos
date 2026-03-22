@@ -444,16 +444,30 @@ canvas#mainChart{width:100%!important;}
     gap:20px;margin-bottom:24px;
 }
 .act-card{
-    background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255,255,255,0.04);
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.005));
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255,255,255,0.05);
     border-radius: 20px;
-    padding: 24px 26px;
+    padding: 26px 28px;
     box-shadow: 
-        inset 0 1px 0 rgba(255,255,255,0.08), 
-        0 8px 32px rgba(0,0,0,0.15);
+        inset 0 1px 0 rgba(255,255,255,0.05), 
+        0 10px 40px rgba(0,0,0,0.2);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+    overflow: hidden;
 }
+.act-card:hover{
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.3);
+}
+.act-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+    opacity:0;transition:opacity 0.3s;
+}
+.act-card:hover::before{opacity:1;}
 .act-title{font-size:12px;font-weight:700;letter-spacing:-.1px;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
 .act-title .dot{width:6px;height:6px;border-radius:50%;}
 .act-list{display:flex;flex-direction:column;gap:10px;}
@@ -490,21 +504,44 @@ canvas#mainChart{width:100%!important;}
 .sb-stat-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
 
 /* quick actions */
-.sb-actions{padding:10px 14px;border-bottom:1px solid var(--b0);}
-.sb-actions-title{font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--t2);font-weight:600;padding:2px 0 6px;}
-.sb-actions-grid{display:flex;flex-direction:column;gap:3px;}
+.sb-actions{padding:12px 16px;border-bottom:1px solid var(--b0);position:relative;}
+.sb-actions::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent);}
+.sb-actions-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);font-weight:700;padding:4px 0 10px; opacity:0.6;}
+.sb-actions-grid{display:flex;flex-direction:column;gap:6px;}
 .sb-action{
-    display:flex;align-items:center;gap:8px;
-    padding:7px 9px;border-radius:7px;
-    font-size:12px;font-weight:600;color:var(--t1);
-    cursor:pointer;transition:all .14s;
+    display:flex;align-items:center;gap:12px;
+    padding:10px 12px;border-radius:12px;
+    font-size:12.5px;font-weight:600;color:var(--t1);
+    cursor:pointer;
     border:1px solid transparent;width:100%;text-align:left;
+    background: linear-gradient(145deg, rgba(255,255,255,0.01), transparent);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
-.sb-action svg{width:14px;height:14px;flex-shrink:0;}
-.sb-action:hover{color:var(--t0);background:var(--b0);border-color:var(--b0);}
+.sb-action::after {
+    content:'';position:absolute;inset:0;
+    opacity:0;transition:opacity 0.3s;
+    background: radial-gradient(400px circle at right center, rgba(255,255,255,0.04), transparent);
+}
+.sb-action svg{width:15px;height:15px;flex-shrink:0;transition:transform 0.3s;}
+.sb-action:hover{
+    color:#fff;
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.sb-action:hover::after { opacity:1; }
+.sb-action:hover svg { transform: scale(1.15); }
 .sb-action .act-icon{
-    width:26px;height:26px;border-radius:6px;
+    width:32px;height:32px;border-radius:9px;
     display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+.sb-action:hover .act-icon {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 15px currentColor;
 }
 
 /* activity feed */
@@ -938,12 +975,12 @@ canvas#mainChart{width:100%!important;}
 
         <!-- ACTIVITY ROW -->
         <div class="activity-row">
-            <div class="act-card flex flex-col justify-between">
-                <div class="uppercase tracking-widest text-[var(--t2)] text-[10px] font-bold mb-5 flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--t2)] opacity-30"></span>
+            <div class="act-card flex flex-col justify-between group/card">
+                <div class="uppercase tracking-[0.2em] text-[#a0a0ab] text-[10px] font-extrabold mb-6 flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--brand)] to-[var(--brand-glow)] shadow-[0_0_8px_var(--brand)]"></span>
                     Top categorías
                 </div>
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-5">
                     @php
                     $cats = $categoriaStats ?? [
                         ['nombre'=>'Lubricantes','pct'=>35],
@@ -954,44 +991,60 @@ canvas#mainChart{width:100%!important;}
                     ];
                     @endphp
                     @foreach($cats as $cat)
-                    <div class="group cursor-default">
-                        <div class="flex justify-between items-center text-xs mb-2">
-                            <span class="text-[var(--t1)] group-hover:text-white transition-colors">{{ $cat['nombre'] }}</span>
-                            <span class="font-mono font-semibold text-white/40 group-hover:text-white transition-colors">{{ $cat['pct'] }}%</span>
+                    <div class="group relative">
+                        <div class="flex justify-between items-center text-[12.5px] mb-2 z-10 relative">
+                            <span class="text-[var(--t1)] font-medium group-hover:text-white group-hover:translate-x-1 transition-all duration-300">{{ $cat['nombre'] }}</span>
+                            <span class="font-mono font-bold text-[var(--brand)] opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">{{ $cat['pct'] }}%</span>
                         </div>
-                        <div class="w-full bg-[var(--b0)] h-[2px] rounded-full overflow-hidden">
-                            <div class="bg-white/20 h-[2px] rounded-full group-hover:bg-white transition-colors" style="width:{{ $cat['pct'] }}%"></div>
+                        <div class="w-full bg-[var(--s3)] h-[4px] rounded-full overflow-hidden shadow-inner relative z-10">
+                            <!-- Using alpine x-init to create a slide-in animation on load -->
+                            <div class="h-full rounded-full bg-gradient-to-r from-[var(--brand)] to-[var(--blue)] transition-all duration-700 ease-out relative" 
+                                 style="width:0%" x-init="setTimeout(() => { $el.style.width = '{{ $cat['pct'] }}%' }, Math.random() * 500)">
+                                <div class="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-100 animate-pulse"></div>
+                            </div>
                         </div>
+                        <div class="absolute -inset-x-3 -inset-y-2 bg-white/[0.02] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
                     </div>
                     @endforeach
                 </div>
             </div>
 
-            <div class="act-card flex flex-col">
-                <div class="uppercase tracking-widest text-[var(--t2)] text-[10px] font-bold mb-5 flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--t2)] opacity-30"></span>
+            <div class="act-card flex flex-col group/card">
+                <div class="uppercase tracking-[0.2em] text-[#a0a0ab] text-[10px] font-extrabold mb-6 flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--amber)] to-[#f59e0b] shadow-[0_0_8px_var(--amber)]"></span>
                     Resumen del día
                 </div>
-                <div class="mt-1 flex flex-col gap-4">
-                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
-                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Ventas realizadas</span>
-                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">{{ $ventasHoyCount ?? 0 }}</span>
+                <div class="flex flex-col gap-3 flex-1 justify-center">
+                    <div class="flex justify-between items-center px-4 py-3 -mx-4 rounded-xl hover:bg-white/[0.04] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 group cursor-default">
+                        <span class="text-[12px] text-[var(--t1)] font-medium group-hover:text-white transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4 text-white/20 group-hover:text-[var(--brand)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                            Ventas realizadas
+                        </span>
+                        <span class="font-mono text-[14px] font-extrabold text-[#f5f5f6] group-hover:text-[var(--brand)] transition-colors">{{ $ventasHoyCount ?? 0 }}</span>
                     </div>
-                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
-                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Productos vendidos</span>
-                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">{{ $productosVendidosHoy ?? 0 }}</span>
+                    
+                    <div class="flex justify-between items-center px-4 py-3 -mx-4 rounded-xl hover:bg-white/[0.04] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 group cursor-default">
+                        <span class="text-[12px] text-[var(--t1)] font-medium group-hover:text-white transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4 text-white/20 group-hover:text-[var(--green)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            Productos vendidos
+                        </span>
+                        <span class="font-mono text-[14px] font-extrabold text-[#f5f5f6] group-hover:text-[var(--green)] transition-colors">{{ $productosVendidosHoy ?? 0 }}</span>
                     </div>
-                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
-                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Ticket promedio</span>
-                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">S/ 0.00</span>
+
+                    <div class="flex justify-between items-center px-4 py-3 -mx-4 rounded-xl hover:bg-white/[0.04] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 group cursor-default">
+                        <span class="text-[12px] text-[var(--t1)] font-medium group-hover:text-white transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4 text-white/20 group-hover:text-[var(--blue)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            Ticket promedio
+                        </span>
+                        <span class="font-mono text-[14px] font-extrabold text-[#f5f5f6] group-hover:text-[var(--blue)] transition-colors">S/ {{ $ticketPromedio ?? '0.00' }}</span>
                     </div>
-                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
-                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-white transition-colors">Nuevos clientes</span>
-                        <span class="font-mono text-[13px] font-bold text-[var(--t0)]">0</span>
-                    </div>
-                    <div class="flex justify-between items-center px-2 py-1 -mx-2 rounded hover:bg-white/[0.02] transition-colors group cursor-default">
-                        <span class="text-[11.5px] text-[var(--t1)] group-hover:text-[var(--red)] transition-colors">Alertas de stock</span>
-                        <span class="font-mono text-[13px] font-bold text-[var(--t0)] group-hover:text-[var(--red)] transition-colors">{{ $stockCritico ?? 0 }}</span>
+
+                    <div class="flex justify-between items-center px-4 py-3 -mx-4 rounded-xl hover:bg-red-500/10 hover:shadow-[inset_0_1px_0_rgba(239,68,68,0.2)] transition-all duration-300 group cursor-default">
+                        <span class="text-[12px] text-[var(--t1)] font-medium group-hover:text-[var(--red)] transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4 text-white/20 group-hover:text-[var(--red)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            Alertas de stock
+                        </span>
+                        <span class="font-mono text-[14px] font-extrabold text-[#f5f5f6] group-hover:text-[var(--red)] transition-colors drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">{{ $stockCritico ?? 0 }}</span>
                     </div>
                 </div>
             </div>
