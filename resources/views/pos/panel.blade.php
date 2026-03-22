@@ -16,12 +16,12 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-    /* neutrals — warm white base */
-    --bg:       #0c0c0e;
-    --s1:       #111114;
-    --s2:       #17171b;
-    --s3:       #1e1e24;
-    --s4:       #26262e;
+    /* neutrals — elegant dark indigo/slate */
+    --bg:       #0d1017;
+    --s1:       #151923;
+    --s2:       #1a1f2c;
+    --s3:       #212736;
+    --s4:       #2b3345;
     --b0:       rgba(255,255,255,0.055);
     --b1:       rgba(255,255,255,0.09);
     --b2:       rgba(255,255,255,0.14);
