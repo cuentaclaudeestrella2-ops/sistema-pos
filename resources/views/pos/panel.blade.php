@@ -12,7 +12,7 @@
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -55,6 +55,15 @@ html,body{height:100%;background:var(--bg);color:var(--t0);font-family:var(--fon
 button{font-family:inherit;cursor:pointer;border:none;background:none;}
 input,select{font-family:inherit;}
 a{text-decoration:none;color:inherit;}
+
+/* @media print */
+@media print {
+    body * { visibility: hidden; }
+    .print-area, .print-area * { visibility: visible; }
+    .print-area { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
+    @page { margin: 0; size: 80mm 200mm; }
+}
+
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px;}
 
 /* ── LAYOUT ── */
@@ -1290,7 +1299,7 @@ canvas#mainChart{width:100%!important;}
             <button class="w-full py-3.5 rounded-xl text-sm font-extrabold uppercase tracking-widest transition-all flex items-center justify-center gap-2"
               :disabled="carrito.length===0"
               :class="carrito.length===0?'bg-[var(--s3)] border border-[var(--b1)] text-white/30 cursor-not-allowed':'bg-[var(--brand)] text-[#0a0a0a] hover:brightness-125 shadow-[0_4_20px_var(--brand-a)]'"
-              @click="procesarVenta()">
+              @click="abrirCobro()">
               <svg class="w-4 h-4" :class="carrito.length===0?'opacity-50':''" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
               INICIAR COBRO
             </button>
@@ -1343,6 +1352,149 @@ canvas#mainChart{width:100%!important;}
       <button class="btn-primary" @click="guardarProducto()">Guardar Producto</button>
     </div>
   </div>
+</div>
+
+<!-- Modal: Cobro POS -->
+<div x-show="modalCobro" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-md" style="display:none;" @keydown.escape.window="modalCobro=false">
+  <div class="bg-[var(--s1)] border border-[var(--b1)] rounded-3xl w-full max-w-sm p-8 shadow-2xl relative text-center">
+    <h3 class="font-extrabold tracking-tight text-white/80 uppercase text-xs tracking-widest mb-1">Total a Cobrar</h3>
+    <div class="text-5xl font-mono font-black text-[var(--brand)] mb-8" x-text="'S/ '+totalCarrito().toFixed(2)"></div>
+    
+    <div class="mb-6 text-left">
+      <label class="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Monto Recibido (S/)</label>
+      <input type="number" x-model.number="montoRecibido" class="w-full text-center bg-[var(--s2)] border-2 border-[var(--brand)]/30 focus:border-[var(--brand)] rounded-2xl py-4 text-3xl font-mono text-white font-bold transition-all focus:outline-none" min="0" step="0.10" @keydown.enter="confirmarCobro()">
+    </div>
+
+    <div class="bg-[var(--s2)] rounded-xl p-4 mb-8 flex justify-between items-center border border-[var(--b0)]" :class="(montoRecibido - totalCarrito()) < 0 ? 'opacity-50' : 'border-[var(--brand)]/20 shadow-inner'">
+      <span class="text-xs font-bold uppercase tracking-widest text-white/60">Vuelto</span>
+      <span class="text-2xl font-mono font-bold" :class="(montoRecibido - totalCarrito()) < 0 ? 'text-[var(--red)]' : 'text-white'" x-text="'S/ '+Math.max(0, montoRecibido - totalCarrito()).toFixed(2)"></span>
+    </div>
+
+    <div class="flex gap-3">
+      <button class="flex-1 py-3.5 rounded-xl border border-[var(--b1)] text-white/60 hover:text-white hover:bg-[var(--s2)] transition-colors font-bold text-sm tracking-wide" @click="modalCobro=false">CANCELAR</button>
+      <button class="flex-1 py-3.5 rounded-xl bg-[var(--brand)] text-[#0a0a0a] hover:brightness-125 transition-all font-extrabold text-sm tracking-wide shadow-[0_4_20px_var(--brand-a)]" :disabled="montoRecibido < totalCarrito()" :class="montoRecibido < totalCarrito()?'opacity-50 cursor-not-allowed':''" @click="confirmarCobro()">EMITIR TICKET</button>
+    </div>
+  </div>
+</div>
+
+<!-- TICKET PRINT AREA -->
+<div class="print-area font-mono bg-white text-black p-4 hidden" x-show="ticketVenta" :class="ticketVenta ? 'block' : 'hidden'">
+    <template x-if="ticketVenta">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; width: 300px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 10px;">
+                <h2 style="margin: 0; font-size: 18px; font-weight: 800;">AUTOCARS CABRERA</h2>
+                <p style="margin: 2px 0;">RUC: 20123456789</p>
+                <p style="margin: 2px 0;">Av. Industrial 451, Taller Central</p>
+                <p style="margin: 2px 0;">Telf: 01-555-1234</p>
+                <p style="margin: 10px 0; font-weight: bold; font-size: 14px;" x-text="ticketVenta.tipoDoc.toUpperCase() + ' ELECTRÓNICA'"></p>
+                <p style="margin: 2px 0; font-weight: bold;" x-text="ticketVenta.ref"></p>
+                <hr style="border-top: 1px dashed #000; margin: 10px 0;">
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <p style="margin: 2px 0;"><strong>FECHA:</strong> <span x-text="ticketVenta.fecha"></span></p>
+                <p style="margin: 2px 0;"><strong>CLIENTE:</strong> <span x-text="ticketVenta.nombre"></span></p>
+                <p style="margin: 2px 0;"><strong>RUC/DNI:</strong> <span x-text="ticketVenta.ruc"></span></p>
+                <p style="margin: 2px 0;"><strong>CAJERO:</strong> ADMIN</p>
+            </div>
+            
+            <hr style="border-top: 1px dashed #000; margin: 10px 0;">
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                <thead>
+                    <tr style="border-bottom: 1px dashed #000;">
+                        <th style="padding: 2px 0; text-align: left;">CANT</th>
+                        <th style="padding: 2px 0; text-align: left;">DESCRIPCIÓN</th>
+                        <th style="padding: 2px 0; text-align: right;">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="item in ticketVenta.carrito">
+                        <tr>
+                            <td style="padding: 4px 0; vertical-align: top;" x-text="item.cantidad"></td>
+                            <td style="padding: 4px 0; padding-right: 5px;">
+                                <div x-text="item.nombre"></div>
+                                <div style="font-size: 10px; color: #555;" x-text="item.codigo + ' (S/ ' + parseFloat(item.precio).toFixed(2) + ')'"></div>
+                            </td>
+                            <td style="padding: 4px 0; text-align: right; vertical-align: top;" x-text="(item.precio * item.cantidad).toFixed(2)"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            
+            <hr style="border-top: 1px dashed #000; margin: 10px 0;">
+            
+            <table style="width: 100%; margin-bottom: 15px;">
+                <tr>
+                    <td style="text-align: right; width: 70%;">Subtotal:</td>
+                    <td style="text-align: right;">S/ <span x-text="ticketVenta.subtotal"></span></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">IGV (18%):</td>
+                    <td style="text-align: right;">S/ <span x-text="ticketVenta.igv"></span></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right; font-weight: bold; font-size: 14px; padding-top: 5px;">TOTAL:</td>
+                    <td style="text-align: right; font-weight: bold; font-size: 14px; padding-top: 5px;">S/ <span x-text="ticketVenta.total"></span></td>
+                </tr>
+            </table>
+
+            <hr style="border-top: 1px dashed #000; margin: 10px 0;">
+
+            <div style="margin-bottom: 15px;">
+                <p style="margin: 2px 0;"><strong>MÉTODO DE PAGO:</strong> <span x-text="ticketVenta.metodo.toUpperCase()"></span></p>
+                <div x-show="ticketVenta.metodo === 'Efectivo'">
+                    <p style="margin: 2px 0;"><strong>RECIBIDO:</strong> S/ <span x-text="ticketVenta.recibido"></span></p>
+                    <p style="margin: 2px 0;"><strong>VUELTO:</strong> S/ <span x-text="ticketVenta.vuelto"></span></p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="margin: 2px 0; font-size: 10px;">Representación impresa de la <span x-text="ticketVenta.tipoDoc"></span> Electrónica.</p>
+                <p style="margin: 2px 0; font-weight: bold; font-size: 13px;">¡Gracias por su preferencia!</p>
+                
+                <!-- SVG BARCODE SIMULATION -->
+                <div style="margin-top: 15px; display: flex; justify-content: center;">
+                    <svg width="200" height="40" viewBox="0 0 200 40">
+                        <rect x="10" y="0" width="3" height="40" fill="black" />
+                        <rect x="15" y="0" width="1" height="40" fill="black" />
+                        <rect x="18" y="0" width="5" height="40" fill="black" />
+                        <rect x="25" y="0" width="2" height="40" fill="black" />
+                        <rect x="30" y="0" width="4" height="40" fill="black" />
+                        <rect x="36" y="0" width="1" height="40" fill="black" />
+                        <rect x="40" y="0" width="6" height="40" fill="black" />
+                        <rect x="48" y="0" width="2" height="40" fill="black" />
+                        <rect x="53" y="0" width="5" height="40" fill="black" />
+                        <rect x="60" y="0" width="1" height="40" fill="black" />
+                        <rect x="64" y="0" width="4" height="40" fill="black" />
+                        <rect x="70" y="0" width="2" height="40" fill="black" />
+                        <rect x="75" y="0" width="5" height="40" fill="black" />
+                        <rect x="83" y="0" width="1" height="40" fill="black" />
+                        <rect x="86" y="0" width="3" height="40" fill="black" />
+                        <rect x="91" y="0" width="6" height="40" fill="black" />
+                        <rect x="100" y="0" width="2" height="40" fill="black" />
+                        <rect x="105" y="0" width="5" height="40" fill="black" />
+                        <rect x="113" y="0" width="1" height="40" fill="black" />
+                        <rect x="116" y="0" width="4" height="40" fill="black" />
+                        <rect x="123" y="0" width="2" height="40" fill="black" />
+                        <rect x="128" y="0" width="7" height="40" fill="black" />
+                        <rect x="138" y="0" width="1" height="40" fill="black" />
+                        <rect x="141" y="0" width="4" height="40" fill="black" />
+                        <rect x="147" y="0" width="2" height="40" fill="black" />
+                        <rect x="151" y="0" width="5" height="40" fill="black" />
+                        <rect x="158" y="0" width="1" height="40" fill="black" />
+                        <rect x="162" y="0" width="4" height="40" fill="black" />
+                        <rect x="168" y="0" width="3" height="40" fill="black" />
+                        <rect x="174" y="0" width="2" height="40" fill="black" />
+                        <rect x="178" y="0" width="5" height="40" fill="black" />
+                        <rect x="186" y="0" width="1" height="40" fill="black" />
+                        <rect x="190" y="0" width="7" height="40" fill="black" />
+                    </svg>
+                </div>
+                <p style="font-size: 10px; margin-top: 5px; letter-spacing: 2px;" x-text="ticketVenta.ref.replace('-', '') + '045920'"></p>
+            </div>
+        </div>
+    </template>
 </div>
 
 <!-- Toast -->
@@ -1505,6 +1657,9 @@ function app() {
     posMedioPago: 'Efectivo',
     posTipoComprobante: 'Boleta',
     posClienteId: '',
+    modalCobro: false,
+    montoRecibido: 0,
+    ticketVenta: null,
     modalCliente: false,
     modalInv: false,
     toastMsg: '',
@@ -1630,23 +1785,59 @@ function app() {
       catch(e) { this.triggerToast('Error','error'); }
     },
 
-    async procesarVenta() {
+    abrirCobro() {
       if(this.carrito.length===0) return;
+      this.montoRecibido = parseFloat(this.totalCarrito()).toFixed(2);
+      this.ticketVenta = null; // Clear old ticket
+      this.modalCobro = true;
+    },
+
+    async confirmarCobro() {
       const total = this.totalCarrito();
+      if(parseFloat(this.montoRecibido) < total && this.posMedioPago === 'Efectivo') {
+        alert('El monto recibido no puede ser menor al total.');
+        return;
+      }
+      
       const rdm = Math.floor(Math.random()*9000)+1000;
       const ref = (this.posTipoComprobante==='Factura'?'F':(this.posTipoComprobante==='Boleta'?'B':'T'))+'001-'+rdm;
       let nombre = 'Cliente Genérico';
-      if(this.posClienteId) { const c=this.clientes.find(x=>x.id==this.posClienteId); if(c) nombre=c.razon; }
+      let ruc = '00000000';
+      if(this.posClienteId) { const c=this.clientes.find(x=>x.id==this.posClienteId); if(c) { nombre=c.razon; ruc=c.nroDoc; } }
       const d = new Date();
       const hm = d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
       const payload = { metodo:this.posMedioPago, concepto:`Venta (${this.posTipoComprobante}) - ${nombre}`, monto:total.toFixed(2), referencia:ref, fecha:d.toLocaleDateString()+' '+hm, carrito:this.carrito };
+      
       try {
         await this.apiFetch('/api/venta','POST',payload);
         await this.refreshAll();
+        
+        // Armar datos del ticket
+        this.ticketVenta = {
+            ref: ref,
+            tipoDoc: this.posTipoComprobante,
+            fecha: d.toLocaleDateString()+' '+hm,
+            nombre: nombre,
+            ruc: ruc,
+            carrito: [...this.carrito],
+            subtotal: (total/1.18).toFixed(2),
+            igv: (total - total/1.18).toFixed(2),
+            total: total.toFixed(2),
+            metodo: this.posMedioPago,
+            recibido: parseFloat(this.montoRecibido).toFixed(2),
+            vuelto: Math.max(0, parseFloat(this.montoRecibido) - total).toFixed(2)
+        };
+        
         this.triggerToast('Venta procesada: '+ref);
         this.carrito=[];
         this.posClienteId='';
-        setTimeout(()=>alert(`COMPROBANTE GENERADO\n--------------------------\nDocumento: ${ref}\nCliente: ${nombre}\nTotal: S/ ${total.toFixed(2)}\nPago: ${this.posMedioPago}\n\n[Enviado a imprimir...]`),300);
+        this.modalCobro=false;
+        
+        // Imprimir ticket
+        setTimeout(() => {
+            window.print();
+        }, 300);
+
       } catch(e) { this.triggerToast('Error al procesar venta','error'); }
     },
 
