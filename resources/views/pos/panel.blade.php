@@ -552,7 +552,7 @@ canvas#mainChart{width:100%!important;}
         <div class="sb-logo-mark">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/><circle cx="12" cy="12" r="3"/></svg>
         </div>
-        <div class="sb-logo-text">AutoCars <span style="color:var(--brand)">Cabrera</span><small>Sistema POS v3.0</small></div>
+        <div class="sb-logo-text" style="opacity: 0.8; font-weight: 500;">AutoCars <span style="color:var(--brand)">Cabrera</span><small style="opacity: 0.6;">Sistema POS v3.0</small></div>
     </div>
 
     <!-- STATS GRID 2x3 -->
@@ -611,10 +611,10 @@ canvas#mainChart{width:100%!important;}
                 Inventario
             </button>
                 <!-- @if(($stockCritico ?? 0) > 0)<span class="nav-badge">{{ $stockCritico }}</span>@endif -->
-            <a href="{{ url('/') }}" class="nav-item">
+            <a href="{{ route('inventario.index') }}" class="nav-item">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 Punto de Venta
-            </button>
+            </a>
         </div>
     </div>
 
