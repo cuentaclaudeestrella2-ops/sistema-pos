@@ -11,6 +11,7 @@
     }
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -63,6 +64,12 @@ a{text-decoration:none;color:inherit;}
     .print-area { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
     @page { margin: 0; size: 80mm 200mm; }
 }
+
+/* ApexCharts Tooltip Overrides */
+.apexcharts-tooltip { background: var(--s2) !important; border: 1px solid var(--b1) !important; box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important; color: #fff !important; mix-blend-mode: normal; font-family: var(--font) !important; border-radius: 8px !important; }
+.apexcharts-tooltip-title { background: var(--s1) !important; border-bottom: 1px solid var(--b0) !important; font-family: var(--font) !important; font-size: 11px !important; font-weight: 700 !important; padding: 6px 10px !important; }
+.apexcharts-tooltip-text { font-family: var(--mono) !important; font-size: 13px !important; font-weight: bold !important; }
+.apexcharts-xaxistooltip { display: none !important; }
 
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px;}
 
@@ -909,17 +916,23 @@ canvas#mainChart{width:100%!important;}
         </div><!-- /kpi-grid -->
 
         <!-- CHART STRIP -->
-        <div class="chart-strip">
-            <div class="chart-strip-head">
-                <div class="chart-strip-title">Actividad de ventas</div>
-                <div class="chart-strip-tabs">
-                    <div class="chart-tab active" onclick="setChartTab(this,'hoy')">Hoy</div>
-                    <div class="chart-tab" onclick="setChartTab(this,'sem')">Semana</div>
-                    <div class="chart-tab" onclick="setChartTab(this,'mes')">Mes</div>
+        <div class="chart-strip relative overflow-hidden" style="min-height: 220px;" wire:ignore>
+            <!-- Background glow effect -->
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--brand-glow)] to-transparent opacity-20 pointer-events-none rounded-xl"></div>
+            
+            <div class="chart-strip-head relative z-10">
+                <div class="chart-strip-title flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--brand)] animate-pulse"></span>
+                    Actividad de ventas
+                </div>
+                <div class="chart-strip-tabs bg-[var(--s1)] border border-[var(--b1)] rounded-lg p-1 flex gap-1">
+                    <button class="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all" :class="chartPeriodo==='hoy' ? 'bg-[var(--brand)] text-[#0a0a0a]' : 'text-white/40 hover:text-white'" @click="setChartPeriod('hoy')">Hoy</button>
+                    <button class="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all" :class="chartPeriodo==='sem' ? 'bg-[var(--brand)] text-[#0a0a0a]' : 'text-white/40 hover:text-white'" @click="setChartPeriod('sem')">Semana</button>
+                    <button class="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all" :class="chartPeriodo==='mes' ? 'bg-[var(--brand)] text-[#0a0a0a]' : 'text-white/40 hover:text-white'" @click="setChartPeriod('mes')">Mes</button>
                 </div>
             </div>
-            <div class="chart-area">
-                <canvas id="mainChart" height="80"></canvas>
+            <div class="chart-area mt-4 -mx-2 relative z-10">
+                <div id="salesChart" class="w-full"></div>
             </div>
         </div>
 
@@ -1687,6 +1700,11 @@ function app() {
     cobroNombre: '',
     cobroDoc: '',
     cobroDireccion: '',
+    
+    // Configuración del Chart
+    chartInstance: null,
+    chartPeriodo: 'hoy',
+
     formC: { razon:'', comercial:'', tipoDoc:'DNI', nroDoc:'', telefono:'', email:'', direccion:'', distrito:'', ciudad:'', credDias:0, limCredito:0, listaPrecio:'1', estado:'activo', notas:'' },
     formI: { codigo:'', nombre:'', categoria:'Lubricantes', marca:'', unidad:'Unidad', precio1:'', precio2:'', precio3:'', stock:0, stockMin:0, stockMax:0, ubicacion:'', estado:'activo' },
     formM: { tipo:'ingreso', metodo:'Efectivo', concepto:'', monto:'', referencia:'' },
@@ -1694,7 +1712,79 @@ function app() {
     async init() {
       const meta = document.querySelector('meta[name="csrf-token"]');
       this.csrfToken = meta ? meta.getAttribute('content') : '';
+      // Inicia el chart
+      this.initChart();
+      
+      // Auto-hide alert banner
+      const ab = document.getElementById('alertBanner');
+      if(ab) setTimeout(()=>ab.style.display='none', 4000);
+      
       await this.refreshAll();
+    },
+
+    initChart() {
+      const options = {
+        series: [{ name: 'Ventas (S/)', data: [120, 350, 240, 580, 420, 710, 680, 950] }],
+        chart: {
+          type: 'area',
+          height: 180,
+          fontFamily: 'inherit',
+          toolbar: { show: false },
+          background: 'transparent',
+          animations: { enabled: true, easing: 'easeinout', speed: 800 }
+        },
+        colors: ['#60a5fa'],
+        fill: {
+          type: 'gradient',
+          gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [0, 90, 100] }
+        },
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth', width: 3 },
+        xaxis: {
+          categories: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+          axisBorder: { show: false },
+          axisTicks: { show: false },
+          labels: { style: { colors: '#52525f', fontSize: '10px', fontWeight: 600 } },
+          tooltip: { enabled: false }
+        },
+        yaxis: {
+          labels: { formatter: (val) => "S/ " + val, style: { colors: '#52525f', fontSize: '10px', fontFamily: 'Geist Mono, monospace' } }
+        },
+        grid: {
+          borderColor: 'rgba(255,255,255,0.03)',
+          strokeDashArray: 4,
+          xaxis: { lines: { show: true } },
+          yaxis: { lines: { show: false } },
+          padding: { top: 0, right: 0, bottom: 0, left: 10 }
+        },
+        theme: { mode: 'dark' },
+        markers: { size: 0, hover: { size: 6, sizeOffset: 3 } }
+      };
+
+      this.chartInstance = new ApexCharts(document.querySelector("#salesChart"), options);
+      this.chartInstance.render();
+    },
+
+    setChartPeriod(periodo) {
+      if(this.chartPeriodo === periodo) return;
+      this.chartPeriodo = periodo;
+      
+      // Simular datos dinámicos premium
+      let newData = [];
+      let newCats = [];
+      if(periodo === 'hoy') {
+        newData = [120, 350, 240, 580, 420, 710, 680, 950];
+        newCats = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
+      } else if(periodo === 'sem') {
+        newData = [1450, 2100, 1800, 3200, 2800, 4500, 1200];
+        newCats = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+      } else {
+        newData = [15000, 18500, 14200, 22000];
+        newCats = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'];
+      }
+
+      this.chartInstance.updateSeries([{ data: newData }]);
+      this.chartInstance.updateOptions({ xaxis: { categories: newCats } });
     },
 
     async refreshAll() {
