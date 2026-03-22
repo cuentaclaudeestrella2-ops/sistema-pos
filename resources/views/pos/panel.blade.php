@@ -633,6 +633,37 @@ canvas#mainChart{width:100%!important;}
 .sb-modal-msg.success{display:block;background:var(--green-a);color:var(--green);}
 .sb-modal-msg.error{display:block;background:var(--red-a);color:var(--red);}
 
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .activity-row { grid-template-columns: 1fr; }
+    .sb-actions-grid { grid-template-columns: 1fr 1fr; }
+    .bottom-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    :root { --sw: 0px; }
+    .sb { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; width: 280px; box-shadow: 10px 0 40px rgba(0,0,0,0.6); }
+    .sb.open { transform: translateX(0); }
+    .topbar { padding: 0 16px; height: 60px; }
+    .content { padding: 16px 14px; }
+    .kpi-grid { grid-template-columns: 1fr; gap: 12px; }
+    .topbar-date { display: none !important; }
+    .btn-tpv span { display: none; }
+    .btn-tpv { padding: 8px; border-radius: 8px; }
+    .btn-tpv svg { width: 17px; height: 17px; margin: 0; }
+    .topbar-title { font-size: 15px; }
+    .sb-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 90; display: none; backdrop-filter: blur(4px); transition: opacity 0.3s; opacity: 0; }
+    .sb-overlay.open { display: block; opacity: 1; }
+    .mobile-menu-btn { display: flex !important; }
+    .sb-actions-grid { grid-template-columns: 1fr; }
+    .sb-field-row { grid-template-columns: 1fr; gap: 0; }
+    .bottom-grid { grid-template-columns: 1fr; }
+    table { display: block; overflow-x: auto; white-space: nowrap; width: 100%; }
+}
+.mobile-menu-btn { display: none; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: var(--s2); border: 1px solid var(--b0); margin-right: 12px; color: var(--t1); cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+.mobile-menu-btn:hover { color: var(--t0); background: var(--s3); }
+.topbar-left { display: flex; align-items: center; }
+
 /* ── NOISE TEXTURE ── */
 .app::after{
     content:'';
@@ -647,7 +678,8 @@ canvas#mainChart{width:100%!important;}
 <div class="app">
 
 <!-- ══ SIDEBAR ══ -->
-<aside class="sb">
+<div class="sb-overlay" :class="mobileMenu ? 'open' : ''" @click="mobileMenu = false"></div>
+<aside class="sb" :class="mobileMenu ? 'open' : ''">
     <div class="px-7 py-8 flex items-center gap-3.5 border-b border-white/[0.02]">
         <div class="w-[42px] h-[42px] rounded-[14px] bg-gradient-to-br from-white/10 to-white/[0.02] border border-white/10 flex items-center justify-center shadow-[0_4_20px_rgba(0,0,0,0.2)] backdrop-blur-md shrink-0">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -856,8 +888,13 @@ canvas#mainChart{width:100%!important;}
     <!-- TOPBAR -->
     <header class="topbar">
         <div class="topbar-left">
-            <div class="topbar-title" x-text="{'panel':'Panel de Control','clientes':'Directorio de Clientes','inventario':'Inventario','pos':'Terminal TPV','caja':'Caja'}[page]||page"></div>
-            <div class="topbar-sub">Visión general · {{ now()->isoFormat('dddd, D [de] MMMM') ?? 'jueves, 19 de marzo' }}</div>
+            <button class="mobile-menu-btn" @click="mobileMenu = true">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div>
+                <div class="topbar-title" x-text="{'panel':'Panel de Control','clientes':'Directorio de Clientes','inventario':'Inventario','pos':'Terminal TPV','caja':'Caja'}[page]||page"></div>
+                <div class="topbar-sub">Visión general · {{ now()->isoFormat('dddd, D [de] MMMM') ?? 'jueves, 19 de marzo' }}</div>
+            </div>
         </div>
         <div class="topbar-right">
             <div class="topbar-date">
@@ -1732,6 +1769,7 @@ async function addStock(e){
 <script>
 function app() {
   return {
+    mobileMenu: false,
     page: 'panel',
     csrfToken: '',
     inventario: [],
