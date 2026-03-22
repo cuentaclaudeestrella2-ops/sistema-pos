@@ -1169,34 +1169,34 @@ canvas#mainChart{width:100%!important;}
       </div>
 
       
-<!-- ===== PUNTO DE VENTA (POS) ===== -->
-      <div x-show="page==='pos'" class="flex gap-5 overflow-hidden" style="display:none; height: calc(100vh - 140px);">
+      <!-- ===== PUNTO DE VENTA (POS) ===== -->
+      <div x-show="page==='pos'" class="flex gap-5 overflow-hidden" style="display:none; height: calc(100vh - 140px); padding: 0 10px;">
         <!-- Product Catalog -->
-        <div class="flex-1 flex flex-col bg-surface/50 rounded-2xl border border-border-light overflow-hidden">
-          <div class="p-4 border-b border-border-light">
-            <div class="relative mb-3">
-              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <input x-model="posBusq" type="text" placeholder="Buscar producto por código o nombre..." class="w-full pl-10 py-3 text-base" @keydown.enter.prevent="agregarPorBusqueda()">
+        <div class="flex-1 flex flex-col bg-[var(--s1)] rounded-2xl border border-[var(--b0)] overflow-hidden shadow-sm">
+          <div class="p-5 border-b border-[var(--b0)]">
+            <div class="relative w-full mb-4">
+              <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input x-model="posBusq" type="text" placeholder="Buscar producto por código o nombre..." class="w-full pl-11 py-3 bg-[var(--s2)] border border-[var(--b1)] rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[var(--brand)] transition-colors text-sm shadow-inner" @keydown.enter.prevent="agregarPorBusqueda()">
             </div>
-            <div class="flex gap-2 overflow-x-auto pb-1" style="scrollbar-width:none;">
-              <button class="badge px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap cursor-pointer transition-colors" :class="posCategoria===''?'bg-primary text-white border-primary/50':'bg-surface border-border-light text-muted hover:bg-white/10'" @click="posCategoria=''">Todos</button>
+            <div class="flex gap-2 overflow-x-auto pb-2" style="scrollbar-width:none;">
+              <button class="px-5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap cursor-pointer transition-all border" :class="posCategoria===''?'bg-[var(--brand)] text-[var(--b0)] border-transparent shadow-[0_0_15px_var(--brand-a)]':'bg-[var(--s2)] border-[var(--b1)] text-white/50 hover:bg-[var(--s3)] hover:text-white'" @click="posCategoria=''">Todos</button>
               <template x-for="cat in [...new Set(inventario.map(i=>i.categoria).filter(Boolean))]">
-                <button class="badge px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap cursor-pointer transition-colors" @click="posCategoria=cat" :class="posCategoria===cat?'bg-white/20 text-white border-white/30':'bg-surface border-border-light text-muted hover:bg-white/10'" x-text="cat"></button>
+                <button class="px-5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap cursor-pointer transition-all border" @click="posCategoria=cat" :class="posCategoria===cat?'bg-[var(--brand)] text-[var(--b0)] border-transparent shadow-[0_0_15px_var(--brand-a)]':'bg-[var(--s2)] border-[var(--b1)] text-white/50 hover:bg-[var(--s3)] hover:text-white'" x-text="cat"></button>
               </template>
             </div>
           </div>
-          <div class="flex-1 overflow-y-auto p-4">
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="flex-1 overflow-y-auto p-5">
+            <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               <template x-for="p in inventario.filter(i=>(!posCategoria||i.categoria===posCategoria)&&(i.nombre.toLowerCase().includes(posBusq.toLowerCase())||i.codigo.toLowerCase().includes(posBusq.toLowerCase())))">
-                <div class="bg-card border border-border-light rounded-xl p-4 cursor-pointer hover:border-accent hover:shadow-[0_0_15px_rgba(255,184,0,0.2)] hover:-translate-y-0.5 transition-all flex flex-col relative" @click="agregarAlCarrito(p)">
-                  <div class="absolute top-0 right-0 p-2"><span class="badge text-[10px]" :class="p.stock<=0?'badge-low':p.stock<=p.stockMin?'badge-warn':''" x-text="p.stock+' ud'"></span></div>
-                  <div class="w-10 h-10 bg-base rounded-full border border-border-light flex items-center justify-center text-muted mb-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <div class="bg-[var(--s2)] border border-[var(--b0)] rounded-[14px] p-4 cursor-pointer hover:bg-[var(--s3)] hover:border-[var(--brand-a)] hover:shadow-lg transition-all flex flex-col relative group" @click="agregarAlCarrito(p)">
+                  <div class="absolute top-3 right-3"><span class="px-2 py-0.5 rounded text-[9px] font-bold border" :class="p.stock<=0?'bg-[var(--red-a)] text-[var(--red)] border-[var(--red)]/20':p.stock<=p.stockMin?'bg-[var(--amber-a)] text-[var(--amber)] border-[var(--amber)]/20':'bg-white/5 text-white/50 border-white/10'" x-text="p.stock+' ud'"></span></div>
+                  <div class="w-12 h-12 bg-[var(--s1)] rounded-xl border border-[var(--b1)] flex items-center justify-center text-white/40 mb-3 group-hover:text-[var(--brand)] group-hover:bg-[var(--brand-a)] group-hover:border-[var(--brand)]/30 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
                   </div>
-                  <p class="font-bold text-sm text-white mb-2 flex-1 line-clamp-2" x-text="p.nombre"></p>
-                  <div class="flex items-end justify-between mt-2 pt-2 border-t border-white/10">
-                    <p class="text-[10px] uppercase text-muted font-bold" x-text="p.codigo"></p>
-                    <p class="font-display font-bold text-white text-lg" x-text="'S/ '+parseFloat(p.precio1).toFixed(2)"></p>
+                  <p class="font-bold text-[13px] text-white/90 mb-3 flex-1 leading-tight group-hover:text-white" x-text="p.nombre"></p>
+                  <div class="flex items-end justify-between mt-auto pt-3 border-t border-[var(--b0)]">
+                    <p class="text-[9px] font-mono tracking-widest text-white/40" x-text="p.codigo"></p>
+                    <p class="font-mono font-bold text-[var(--brand)] text-[15px]" x-text="'S/ '+parseFloat(p.precio1).toFixed(2)"></p>
                   </div>
                 </div>
               </template>
@@ -1208,11 +1208,11 @@ canvas#mainChart{width:100%!important;}
         </div>
 
         <!-- Cart -->
-        <div class="w-96 flex flex-col bg-surface/90 rounded-2xl border border-border-light overflow-hidden flex-shrink-0">
-          <div class="p-4 border-b border-border-light bg-base/50">
-            <label class="text-[10px] text-muted uppercase tracking-widest block mb-1 font-bold">Cliente</label>
-            <select x-model="posClienteId" class="w-full text-sm">
-              <option value="">Cliente Genérico (Boleta)</option>
+        <div class="w-[380px] flex flex-col bg-[var(--s1)] rounded-2xl border border-[var(--b0)] overflow-hidden flex-shrink-0 shadow-lg">
+          <div class="p-5 border-b border-[var(--b0)] bg-[var(--s2)]/50">
+            <label class="text-[9.5px] text-white/50 uppercase tracking-widest block mb-2 font-bold">Cliente Seleccionado</label>
+            <select x-model="posClienteId" class="w-full text-sm bg-[var(--s2)] border border-[var(--b1)] rounded-xl text-white py-2 px-3 focus:outline-none focus:border-[var(--brand)] transition-colors">
+              <option value="">Cliente Genérico (Venta Rápida)</option>
               <template x-for="c in clientes">
                 <option :value="c.id" x-text="c.razon+' ('+c.nroDoc+')'"></option>
               </template>
@@ -1220,30 +1220,32 @@ canvas#mainChart{width:100%!important;}
           </div>
 
           <div class="flex-1 overflow-y-auto">
-            <div class="px-4 py-3 bg-base/80 border-b border-border-light flex justify-between items-center sticky top-0 z-10">
-              <span class="text-[10px] font-bold text-muted uppercase tracking-widest">Orden</span>
-              <button @click="carrito=[]" x-show="carrito.length>0" class="text-[10px] font-bold uppercase text-primary hover:text-white transition-colors">Vaciar</button>
+            <div class="px-5 py-3 bg-[var(--s1)] border-b border-[var(--b0)] flex justify-between items-center sticky top-0 z-10 shadow-sm">
+              <span class="text-[9px] font-bold text-white/40 uppercase tracking-widest">Resumen de Orden</span>
+              <button @click="carrito=[]" x-show="carrito.length>0" class="text-[9px] font-bold uppercase tracking-wider text-[var(--red)] hover:text-white hover:bg-[var(--red-a)] px-2 py-1 rounded transition-colors">Vaciar Cart</button>
             </div>
 
-            <div x-show="carrito.length===0" class="flex flex-col items-center justify-center p-8 h-48 text-muted text-center text-sm">
-              <svg class="w-8 h-8 mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-              El carrito está vacío.<br>Seleccione un producto.
+            <div x-show="carrito.length===0" class="flex flex-col items-center justify-center p-8 h-48 text-white/30 text-center text-[13px]">
+              <div class="w-16 h-16 bg-[var(--s2)] border border-[var(--b1)] rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              El carrito está vacío.<br>Selecciona un producto del catálogo.
             </div>
 
-            <div class="divide-y divide-white/5">
+            <div class="divide-y divide-[var(--b0)]">
               <template x-for="(item, index) in carrito" :key="index">
-                <div class="p-4 hover:bg-white/5 transition-colors">
-                  <div class="flex justify-between mb-2">
-                    <p class="text-sm font-bold text-white flex-1 pr-2" x-text="item.nombre"></p>
-                    <button @click="carrito.splice(index,1)" class="text-muted hover:text-primary transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <div class="p-5 hover:bg-white/[0.02] transition-colors group cursor-default">
+                  <div class="flex justify-between mb-3">
+                    <p class="text-[13px] font-semibold text-white/90 flex-1 pr-3 leading-tight group-hover:text-white" x-text="item.nombre"></p>
+                    <button @click="carrito.splice(index,1)" class="text-white/20 hover:text-[var(--red)] hover:bg-[var(--red-a)] p-1 rounded transition-colors h-fit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                   </div>
                   <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1 bg-base rounded-lg border border-border-light p-1">
-                      <button @click="if(item.cantidad>1) item.cantidad--" class="w-7 h-7 flex items-center justify-center text-white hover:bg-white/10 rounded transition-colors font-bold">-</button>
-                      <input type="number" x-model.number="item.cantidad" class="w-10 text-center bg-transparent border-none p-0 text-sm font-bold" min="1">
-                      <button @click="item.cantidad++" class="w-7 h-7 flex items-center justify-center text-white hover:bg-white/10 rounded transition-colors font-bold">+</button>
+                    <div class="flex items-center gap-1 bg-[var(--s2)] rounded-lg border border-[var(--b1)] p-0.5 shadow-inner">
+                      <button @click="if(item.cantidad>1) item.cantidad--" class="w-8 h-8 flex items-center justify-center text-white/70 hover:bg-white/10 hover:text-white rounded-md transition-colors font-bold">-</button>
+                      <input type="number" x-model.number="item.cantidad" class="w-10 text-center bg-transparent border-none p-0 text-sm font-mono font-bold text-white focus:outline-none" min="1">
+                      <button @click="item.cantidad++" class="w-8 h-8 flex items-center justify-center text-white/70 hover:bg-white/10 hover:text-white rounded-md transition-colors font-bold">+</button>
                     </div>
-                    <p class="font-display font-bold text-lg text-white" x-text="'S/ '+(item.precio*item.cantidad).toFixed(2)"></p>
+                    <p class="font-mono font-bold text-[15px] text-[var(--brand)]" x-text="'S/ '+(item.precio*item.cantidad).toFixed(2)"></p>
                   </div>
                 </div>
               </template>
@@ -1251,46 +1253,46 @@ canvas#mainChart{width:100%!important;}
           </div>
 
           <!-- Totals -->
-          <div class="p-5 bg-card border-t border-border-light flex-shrink-0">
-            <div class="space-y-2 mb-4">
-              <div class="flex justify-between text-sm text-muted">
+          <div class="p-5 bg-[var(--s2)] border-t border-[var(--b0)] flex-shrink-0 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-20">
+            <div class="space-y-2.5 mb-5">
+              <div class="flex justify-between text-[13px] text-white/60">
                 <span>Subtotal</span>
-                <span class="font-display text-white" x-text="'S/ '+(totalCarrito()/1.18).toFixed(2)"></span>
+                <span class="font-mono text-white/90" x-text="'S/ '+(totalCarrito()/1.18).toFixed(2)"></span>
               </div>
-              <div class="flex justify-between text-sm text-muted">
+              <div class="flex justify-between text-[13px] text-white/60">
                 <span>IGV (18%)</span>
-                <span class="font-display text-white" x-text="'S/ '+(totalCarrito()-totalCarrito()/1.18).toFixed(2)"></span>
+                <span class="font-mono text-white/90" x-text="'S/ '+(totalCarrito()-totalCarrito()/1.18).toFixed(2)"></span>
               </div>
-              <div class="flex justify-between items-end pt-3 border-t border-white/10">
-                <span class="text-[10px] font-bold uppercase text-muted">Total</span>
-                <span class="text-2xl font-display font-bold text-success" x-text="'S/ '+totalCarrito().toFixed(2)"></span>
+              <div class="flex justify-between items-end pt-3.5 border-t border-[var(--b0)]">
+                <span class="text-[10px] font-bold uppercase text-white/50 tracking-widest">Total Pagar</span>
+                <span class="text-2xl font-mono tracking-tight font-extrabold text-[var(--brand)]" x-text="'S/ '+totalCarrito().toFixed(2)"></span>
               </div>
             </div>
-            <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="grid grid-cols-2 gap-3 mb-5">
               <div>
-                <label class="text-[10px] text-muted uppercase tracking-widest block mb-1 font-bold">Comprobante</label>
-                <select x-model="posTipoComprobante" class="w-full text-sm">
+                <label class="text-[9px] text-white/50 uppercase tracking-widest block mb-1.5 font-bold">Tipo Doc.</label>
+                <select x-model="posTipoComprobante" class="w-full text-sm bg-[var(--s1)] border border-[var(--b1)] rounded-xl text-white py-2 px-3 focus:outline-none focus:border-[var(--brand)]">
                   <option value="Boleta">Boleta</option>
                   <option value="Factura">Factura</option>
-                  <option value="Ticket">Ticket</option>
+                  <option value="Ticket">Ticket Interno</option>
                 </select>
               </div>
               <div>
-                <label class="text-[10px] text-muted uppercase tracking-widest block mb-1 font-bold">Medio de Pago</label>
-                <select x-model="posMedioPago" class="w-full text-sm">
+                <label class="text-[9px] text-white/50 uppercase tracking-widest block mb-1.5 font-bold">Método Pago</label>
+                <select x-model="posMedioPago" class="w-full text-sm bg-[var(--s1)] border border-[var(--b1)] rounded-xl text-white py-2 px-3 focus:outline-none focus:border-[var(--brand)]">
                   <option value="Efectivo">Efectivo 💵</option>
                   <option value="Yape/Plin">Yape/Plin 📱</option>
                   <option value="Tarjeta">Tarjeta 💳</option>
-                  <option value="Transferencia">Transferencia 🏦</option>
+                  <option value="Transferencia">Banco 🏦</option>
                 </select>
               </div>
             </div>
-            <button class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wide transition-all flex items-center justify-center gap-2"
+            <button class="w-full py-3.5 rounded-xl text-sm font-extrabold uppercase tracking-widest transition-all flex items-center justify-center gap-2"
               :disabled="carrito.length===0"
-              :class="carrito.length===0?'bg-base border border-border-light text-muted cursor-not-allowed':'bg-primary hover:bg-primary/90 text-white shadow-[0_0_20px_rgba(255,42,77,0.4)] border border-primary/50'"
+              :class="carrito.length===0?'bg-[var(--s3)] border border-[var(--b1)] text-white/30 cursor-not-allowed':'bg-[var(--brand)] text-[#0a0a0a] hover:brightness-125 shadow-[0_4_20px_var(--brand-a)]'"
               @click="procesarVenta()">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-              COBRAR E IMPRIMIR
+              <svg class="w-4 h-4" :class="carrito.length===0?'opacity-50':''" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              INICIAR COBRO
             </button>
           </div>
         </div>
